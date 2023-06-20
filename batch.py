@@ -3,6 +3,7 @@ import json
 import aiohttp
 import asyncio
 import datetime
+import random
 
 api_endpoint = "http://192.168.1.50:5000/api/v1/generate"
 api_headers = {
@@ -62,9 +63,13 @@ async def get_answer_from_llm(seed):
 
        
 async def main():
-    for i in range(3):
-        seed = datetime.datetime.now().timestamp()
+    for i in range(1):
+        seed = random.randint(2, 100000000)
+        
         data = await get_answer_from_llm(seed)
+        
+        data = data.replace("\r\n", "\n\n")
+        
         with open('results.txt', 'a+') as f:
             f.write("Seed: " + str(seed) + "\n" + data + "\n\n")
 
